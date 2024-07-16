@@ -1,10 +1,12 @@
 import 'package:bmi_cal/gender_widget.dart';
 import 'package:flutter/material.dart';
-
+import 'body_dimension.dart';
 import 'height_meter.dart';
+import 'person.dart';
 
 class BMI extends StatelessWidget {
-  const BMI({super.key});
+  Person person = Person(gender: true, height: 178, weight: 91, age: 22);
+  BMI({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,6 @@ class BMI extends StatelessWidget {
         centerTitle: true,
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Divider(
             thickness: 5,
@@ -25,21 +26,22 @@ class BMI extends StatelessWidget {
           const BodyDimension(),
         ],
       ),
+       bottomNavigationBar: GestureDetector(
+        onTap: (){
+          Navigator.pushNamed(context, '/result',arguments: person);
+        },
+         child: BottomAppBar(
+          color: Theme.of(context).colorScheme.onPrimary,
+          child: const Center(
+            child: Text(
+              "CALCULATE",
+              style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24),
+            ),
+          ),
+         ),
+       )
     );
-  }
-}
-
-
-class BodyDimension extends StatefulWidget {
-  const BodyDimension({super.key});
-
-  @override
-  State<BodyDimension> createState() => _BodyDimensionState();
-}
-
-class _BodyDimensionState extends State<BodyDimension> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }

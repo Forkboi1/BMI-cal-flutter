@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'b_m_i.dart';
+import 'person.dart';
+import 'result_page.dart';
 
 void main() {
   runApp(const MainApp());
@@ -18,23 +22,37 @@ class MainApp extends StatelessWidget {
           surface: Color(0xFF0f172a),
           secondary: Color(0xff3c3c3c),
           onSecondary: Color(0xff282828),
-          onPrimary: Colors.white,
+          onPrimary: Color.fromARGB(255, 187, 40, 77),
           onSurface: Colors.white,
         ),
-        scaffoldBackgroundColor: Color(0xFF0f172a),
-        dividerColor: Color(0xFF28283c),
+        scaffoldBackgroundColor: const Color(0xFF0f172a),
+        dividerColor: const Color(0xFF28283c),
         textTheme: const TextTheme(
-          displayMedium: TextStyle(
+          displaySmall: TextStyle(
             fontSize: 14,
             color: Colors.grey,
           ),
+          displayMedium: TextStyle(
+            fontSize: 42,
+            fontWeight: FontWeight.bold,
+          ),
           displayLarge: TextStyle(
-            fontSize: 26,
+            fontSize: 58,
             fontWeight: FontWeight.bold,
           )
         ),
       ),
-      home: const BMI(),
+      home: BMI(),
+      onGenerateRoute: (settings) {
+        if (settings.name == '/result') {
+          final args = settings.arguments as Person;
+          return MaterialPageRoute(
+            builder: (context) => ResultPage(person: args),
+          );
+        }
+        assert(false, 'Need to implement ${settings.name}');
+        return null;
+      }
     );
   }
 }

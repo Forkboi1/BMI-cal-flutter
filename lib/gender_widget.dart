@@ -32,20 +32,22 @@ class _GenderWidgetState extends State<GenderWidget> {
       ],
     );
   }
-  
+
   Container containerHolder(BuildContext context, String gender, IconData genderIcon) {
+    bool flag = gender == "MALE"? _isMale:!_isMale;
     return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: !_isMale ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.onSecondary,
+            color: flag? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.onSecondary,
           ),
-          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
+          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 45),
+          margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
           child: Column(
             children:[
               Icon(genderIcon,size: 70,),
               Text(
                 gender,
-                style: Theme.of(context).textTheme.displayMedium
+                style: Theme.of(context).textTheme.displaySmall
               ),
             ],
           ),
