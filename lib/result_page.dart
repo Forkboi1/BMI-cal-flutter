@@ -1,15 +1,15 @@
 import 'dart:math';
 import 'package:bmi_cal/person.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ResultPage extends StatelessWidget {
 
-  const ResultPage({Key? key, required this.person}) : super(key: key);
-
-  final Person person;
+  const ResultPage({Key? key}) : super(key: key);
 
 
-  (double, String, String, Color) bmi_cal() {
+  (double, String, String, Color) bmi_cal(BuildContext context) {
+    var person = Provider.of<Person>(context);
     double bmiValue = person.weight / pow((person.height / 100), 2);
     String bmiCategory;
     String bmiMessage;
@@ -35,7 +35,7 @@ class ResultPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    var bmiResults = bmi_cal();
+    var bmiResults = bmi_cal(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -43,29 +43,39 @@ class ResultPage extends StatelessWidget {
           style: Theme.of(context).textTheme.displayMedium,
           ),
       ),
-      body: Container(
-        margin: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).colorScheme.secondary,
-      ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: Row(
           children: [
-            Text(
-              "${bmiResults.$2}",
-              style: TextStyle(
-                color: bmiResults.$4,
-                fontWeight: FontWeight.bold,
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                margin: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Theme.of(context).colorScheme.secondary,
               ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      "${bmiResults.$2}",
+                      style: TextStyle(
+                        color: bmiResults.$4,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      ),
+                    Text(
+                      "${bmiResults.$1}".substring(0,4),
+                      style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                    Text(
+                      "${bmiResults.$3}",
+                      ),
+                  ],
+                ),
               ),
-            Text(
-              "${bmiResults.$1}".substring(0,4),
-              style: Theme.of(context).textTheme.displayLarge,
-              ),
-            Text(
-              "${bmiResults.$3}",
-              ),
+            ),
           ],
         ),
       ),

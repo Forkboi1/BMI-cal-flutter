@@ -1,12 +1,17 @@
 import 'dart:math';
-
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'b_m_i.dart';
 import 'person.dart';
 import 'result_page.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Person(gender: true, height: 170, weight: 70, age: 25),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -43,15 +48,7 @@ class MainApp extends StatelessWidget {
         ),
       ),
       home: BMI(),
-      onGenerateRoute: (settings) {
-        if (settings.name == '/result') {
-          final args = settings.arguments as Person;
-          return MaterialPageRoute(
-            builder: (context) => ResultPage(person: args),
-          );
-        }
-        assert(false, 'Need to implement ${settings.name}');
-        return null;
+      routes: {'/result': (context) => ResultPage()
       }
     );
   }

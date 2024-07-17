@@ -5,7 +5,6 @@ import 'height_meter.dart';
 import 'person.dart';
 
 class BMI extends StatelessWidget {
-  Person person = Person(gender: true, height: 178, weight: 91, age: 22);
   BMI({super.key});
 
   @override
@@ -21,14 +20,14 @@ class BMI extends StatelessWidget {
             thickness: 5,
             color: Theme.of(context).dividerColor,
           ),
-          const GenderWidget(),
-          const HeightMeter(),
+          GenderWidget(),
+          HeightMeter(),
           const BodyDimension(),
         ],
       ),
        bottomNavigationBar: GestureDetector(
         onTap: (){
-          Navigator.pushNamed(context, '/result',arguments: person);
+          Navigator.pushNamed(context, '/result');
         },
          child: BottomAppBar(
           color: Theme.of(context).colorScheme.onPrimary,

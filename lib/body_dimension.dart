@@ -1,5 +1,6 @@
-import 'package:bmi_cal/b_m_i.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'person.dart';
 
 class BodyDimension extends StatefulWidget {
   const BodyDimension({super.key});
@@ -9,56 +10,80 @@ class BodyDimension extends StatefulWidget {
 }
 
 class _BodyDimensionState extends State<BodyDimension> {
-  int _weight = 50;
-  int age = 22;
-  Container containerHolder(BuildContext context, String dimensionType) {
+
+  Container containerHolder(BuildContext context, String dimensionType, int currentValue, VoidCallback onDecrement, VoidCallback onIncrement) {
     return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Theme.of(context).colorScheme.secondary,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 35),
+      child: Column(
+        children:[
+          Text(
+            dimensionType,
+            style: Theme.of(context).textTheme.displaySmall,
           ),
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 35),
-          child: Column(
-            children:[
-              Text(
-                dimensionType,
-                style: Theme.of(context).textTheme.displaySmall),
-              Text(
-                "25",
-                style: Theme.of(context).textTheme.displayMedium
+          Text(
+            currentValue.toString(),
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Material(
+                elevation: 5.0,
+                shape: CircleBorder(), // This ensures the material has a circular shape
+                child: IconButton(
+                  onPressed: onDecrement,
+                  icon: Icon(Icons.remove),
+                ),
               ),
-              Row(
-                children: [
-                  Material(
-                    elevation: 5.0,
-                    shape: CircleBorder(), // This ensures the material has a circular shape
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.remove),
-                    ),
-                  ),
-                  SizedBox(width: 10,),
-                  Material(
-                    elevation: 5.0,
-                    shape: CircleBorder(), // This ensures the material has a circular shape
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.add),
-                    ),
-                  ),
-                ],
-              )
+              SizedBox(width: 10,),
+              Material(
+                elevation: 5.0,
+                shape: CircleBorder(), // This ensures the material has a circular shape
+                child: IconButton(
+                  onPressed: onIncrement,
+                  icon: Icon(Icons.add),
+                ),
+              ),
             ],
-          ),
-        );
+          )
+        ],
+      ),
+    );
   }
+
   @override
   Widget build(BuildContext context) {
+    var person = Provider.of<Person>(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        containerHolder(context, "WEIGHT"),
-        containerHolder(context, "AGE"),
+        containerHolder(
+          context, 
+          "WEIGHT", 
+          person.weight, 
+          () {
+            person.updateWeight(person.weight - 1);
+          },
+          () {
+            person.updateWeight(person.weight + 1);
+          }
+        ),
+        containerHolder(
+          context, 
+          "AGE", 
+          person.age, 
+          () {
+            person.updateAge(person.age - 1);
+          },
+          () {
+            person.updateAge(person.age + 1);
+          }
+        ),
       ],
     );
   }
